@@ -63,9 +63,13 @@ export function reducer (state = initialState, action: fromPizzas.PizzasAction):
 }
 
 /**
- * 
+ * Exposing some levels of state.
  * @param state 
  */
 export const getPizzasLoading = (state: PizzaState) => state.loading;
 export const getPizzasLoaded = (state: PizzaState) => state.loaded;
 export const getPizzas = (state: PizzaState) => state.data;
+
+/**
+ * Selector is a function where we can compose different levels of states and return a new piece state.
+ */

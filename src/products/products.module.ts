@@ -42,6 +42,7 @@ export const ROUTES: Routes = [
      * from feature modules. These modules can be loaded
      * eagerly or lazily and will be dynamically added to
      * the existing state. Reducers are now registered to the Store
+     * Anything under this feature module i.e. Products module is under the property called 'products' as shown below.
      */
     StoreModule.forFeature('products', {reducers})
   ],
