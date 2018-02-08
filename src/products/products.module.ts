@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store';
 // components
 import * as fromComponents from './components';
 
@@ -35,6 +37,13 @@ export const ROUTES: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forChild(ROUTES),
+    /**
+     * StoreModule.forFeature is used for composing state
+     * from feature modules. These modules can be loaded
+     * eagerly or lazily and will be dynamically added to
+     * the existing state. Reducers are now registered to the Store
+     */
+    StoreModule.forFeature('products', {reducers})
   ],
   providers: [...fromServices.services],
   declarations: [...fromContainers.containers, ...fromComponents.components],
