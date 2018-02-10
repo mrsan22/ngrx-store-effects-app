@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
-import { reducers } from './store';
+import { EffectsModule } from "@ngrx/effects";
+import { reducers, effects } from './store';
 // components
 import * as fromComponents from './components';
 
@@ -44,7 +45,8 @@ export const ROUTES: Routes = [
      * the existing state. Reducers are now registered to the Store
      * Anything under this feature module i.e. Products module is under the property called 'products' as shown below.
      */
-    StoreModule.forFeature('products', reducers)
+    StoreModule.forFeature('products', reducers),
+    EffectsModule.forFeature(effects)
   ],
   providers: [...fromServices.services],
   declarations: [...fromContainers.containers, ...fromComponents.components],

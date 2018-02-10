@@ -40,8 +40,8 @@ export class ProductsComponent implements OnInit {
     // since we have used in 'products' string in StoreModule.forFeature() under products.module. So here we can pass the same string to store.select.
     // OR we can pass our 'getAllPizzas' selector to all the pizzas
     //this.store.select<any>('products').subscribe(state => console.log(state))
-    debugger;
     this.pizzas$ = this.store.select(fromStore.getAllPizzas);
+    this.store.dispatch(new fromStore.LoadPizzas);
 
   }
 }
