@@ -31,8 +31,10 @@ export const getProductsState = createFeatureSelector<ProductsState>('products')
 // Give me products and then give me pizzas.
 export const getPizzaState = createSelector(getProductsState, (state: ProductsState) => state.pizzas);
 
+// This returns the pizza entities
 export const getPizzasEntities = createSelector(getPizzaState, fromPizzas.getPizzasEntities);
 
+// Return pizzas as Arrays
 export const getAllPizzas = createSelector(getPizzasEntities, (entities) => {
     //[1,2,3].map()
     // Object.keys() returns a string array

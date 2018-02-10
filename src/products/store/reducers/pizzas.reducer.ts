@@ -30,9 +30,8 @@ export function reducer (state = initialState, action: fromPizzas.PizzasAction):
             };
         }
         case fromPizzas.LOAD_PIZZAS_SUCCESS: {
-            // [{id:1}, {id: 2}]
+            // [{id:1, name: string, toppings: []}, {id:2, name: string, toppings: []}]
             const pizzas = action.payload;
-            
             // check the reduce function syntax(callbackFn, initialValue)
             const entities = pizzas.reduce((entities: {[id: number]: Pizza}, pizza: Pizza) => {
                return {
