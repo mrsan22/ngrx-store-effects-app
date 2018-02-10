@@ -44,7 +44,7 @@ export const ROUTES: Routes = [
      * the existing state. Reducers are now registered to the Store
      * Anything under this feature module i.e. Products module is under the property called 'products' as shown below.
      */
-    StoreModule.forFeature('products', {reducers})
+    StoreModule.forFeature('products', reducers)
   ],
   providers: [...fromServices.services],
   declarations: [...fromContainers.containers, ...fromComponents.components],

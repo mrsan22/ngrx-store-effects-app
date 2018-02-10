@@ -17,11 +17,11 @@ import { Pizza } from '../../models/pizza.model';
         </a>
       </div>
       <div class="products__list">
-        <div *ngIf="!((pizzas)?.length)">
+        <div *ngIf="!((pizzas$ | async)?.length)">
           No pizzas, add one to get started.
         </div>
         <pizza-item
-          *ngFor="let pizza of (pizzas)"
+          *ngFor="let pizza of (pizzas$ | async)"
           [pizza]="pizza">
         </pizza-item>
       </div>
@@ -29,16 +29,19 @@ import { Pizza } from '../../models/pizza.model';
   `,
 })
 export class ProductsComponent implements OnInit {
-  pizzas: Pizza[];
+  pizzas$: Observable<Pizza[]>;
+  // pizzas: Pizza[]
 
   // only select from store that exist in Product state
   constructor(private store: Store<fromStore.ProductsState>) {}
 
   ngOnInit() {
     // gives back a slice of state
-    // since we have used in 'products' string in StoreModule.forFeature() under products.module. So here we are using the same string.
-   this.store.select<any>('products').subscribe(state => {
-     console.log(state)
-   })
+    // since we have used in 'products' string in StoreModule.forFeature() under products.module. So here we can pass the same string to store.select.
+    // OR we can pass our 'getAllPizzas' selector to all the pizzas
+    //this.store.select<any>('products').subscribe(state => console.log(state))
+    debugger;
+    this.pizzas$ = this.store.select(fromStore.getAllPizzas);
+
   }
 }
