@@ -1,4 +1,4 @@
-import { ActionReducerMap, createSelector, createFeatureSelector } from '@ngrx/store';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 import * as fromPizzas from './pizzas.reducer';
 
@@ -22,26 +22,11 @@ export const reducers: ActionReducerMap<ProductsState> = {
 // Creating Selectors:
 // Selectors allows us to separate our app state with our component tree. We can compose our app state and then pass slices of state that we need to our component.
 // Here from products, we just need pizzas.
-// Holds a selector for entire lazy loaded module (Products)
+// Holds a selector for entire lazy loaded module (Products) : Feature Selector
 export const getProductsState = createFeatureSelector<ProductsState>('products');
 
-// pizza state
-// Compose 'Products' state to get the pizzas. It is going to return a 'Products.pizzas`. We are going down from products to select pizzas.
-// This is going to create a selector from 'products' and then jump down a level.
-// Give me products and then give me pizzas.
-export const getPizzaState = createSelector(getProductsState, (state: ProductsState) => state.pizzas);
 
-// This returns the pizza entities
-export const getPizzasEntities = createSelector(getPizzaState, fromPizzas.getPizzasEntities);
-
-// Return pizzas as Arrays
-export const getAllPizzas = createSelector(getPizzasEntities, (entities) => {
-    //[1,2,3].map()
-    // Object.keys() returns a string array
-    return Object.keys(entities).map(id => entities[parseInt(id, 10)])
-})
-export const getAllPizzasLoaded = createSelector(getPizzaState, fromPizzas.getPizzasLoaded);
-export const getAllPizzasLoading = createSelector(getPizzaState, fromPizzas.getPizzasLoading);
+// Moved selectors to its own directory.
 
 
 // Sample State Tree: A JS object
