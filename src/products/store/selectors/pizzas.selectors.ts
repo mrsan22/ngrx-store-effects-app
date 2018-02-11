@@ -1,9 +1,9 @@
-import { createSelector } from "@ngrx/store";
+import { createSelector } from '@ngrx/store';
 
-import * as fromRoot from "../../../app/store";
-import * as fromFeature from "../reducers";
-import * as fromPizzas from "../reducers/pizzas.reducer";
-import { Pizza } from "../../models/pizza.model";
+import * as fromRoot from '../../../app/store';
+import * as fromFeature from '../reducers';
+import * as fromPizzas from '../reducers/pizzas.reducer';
+import { Pizza } from '../../models/pizza.model';
 
 /**
  * We want to take data from RouterStore and compose it to go and select pizza entity using route param.
@@ -19,10 +19,7 @@ export const getPizzaState = createSelector(
 );
 
 // This returns the pizza entities
-export const getPizzasEntities = createSelector(
-  getPizzaState,
-  fromPizzas.getPizzasEntities
-);
+export const getPizzasEntities = createSelector(getPizzaState, fromPizzas.getPizzasEntities);
 
 // get the selected pizza from store and render it.
 // Access state object in our router.
@@ -31,7 +28,7 @@ export const getSelectedPizza = createSelector(
   getPizzasEntities, // feature State
   fromRoot.getRouterState, // route state
   (entities, router): Pizza => {
-      // composing new state using above two states.
+    // composing new state using above two states.
     return router.state && entities[router.state.params.pizzaId];
   }
 );
@@ -42,11 +39,5 @@ export const getAllPizzas = createSelector(getPizzasEntities, entities => {
   // Object.keys() returns a string array
   return Object.keys(entities).map(id => entities[parseInt(id, 10)]);
 });
-export const getAllPizzasLoaded = createSelector(
-  getPizzaState,
-  fromPizzas.getPizzasLoaded
-);
-export const getAllPizzasLoading = createSelector(
-  getPizzaState,
-  fromPizzas.getPizzasLoading
-);
+export const getAllPizzasLoaded = createSelector(getPizzaState, fromPizzas.getPizzasLoaded);
+export const getAllPizzasLoading = createSelector(getPizzaState, fromPizzas.getPizzasLoading);

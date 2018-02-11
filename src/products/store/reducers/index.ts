@@ -1,12 +1,14 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 import * as fromPizzas from './pizzas.reducer';
+import * as fromToppings from './toppings.reducer';
 
 /**
  * Interface for a slice of state. Top level state interface in products module (ProductsState) is just a map of keys to inner state types.
  */
 export interface ProductsState {
-   pizzas: fromPizzas.PizzaState 
+   pizzas: fromPizzas.PizzaState ;
+   toppings: fromToppings.ToppingsState;
 }
 
 /**
@@ -16,7 +18,8 @@ export interface ProductsState {
  * Here the pizzas reducer only manages a slice of state that consist of data, loading and loaded.
  */
 export const reducers: ActionReducerMap<ProductsState> = {
-    pizzas: fromPizzas.reducer
+    pizzas: fromPizzas.reducer,
+    toppings: fromToppings.reducer,
 }
 
 // Creating Selectors:
@@ -30,10 +33,10 @@ export const getProductsState = createFeatureSelector<ProductsState>('products')
 
 
 // Sample State Tree: A JS object
-// entire ngrx store tree. 
+// entire ngrx store tree.
 /**
- * When the StoreModule.forFeature() loads the products feature module, below sample products state and reducer(pizzas) is attached to the App state by the ngrx store dynamically. 
- * 
+ * When the StoreModule.forFeature() loads the products feature module, below sample products state and reducer(pizzas) is attached to the App state by the ngrx store dynamically.
+ *
  */
 // const state = {
 //     // getProductsState selector gives reference to 'products' below and we asking to go one level down to get pizzas using 'getPizzaState' selector.
