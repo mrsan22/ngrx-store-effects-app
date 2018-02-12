@@ -30,4 +30,3 @@ export class VisualiseToppings implements Action {
 
 // action types
 export type ToppingsAction = LoadToppings | LoadToppingsFail | LoadToppingsSuccess | VisualiseToppings;
-
