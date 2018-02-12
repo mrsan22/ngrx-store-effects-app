@@ -3,6 +3,7 @@ import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../../../app/store';
 import * as fromFeature from '../reducers';
 import * as fromPizzas from '../reducers/pizzas.reducer';
+import * as fromToppings from './toppings.selector';
 import { Pizza } from '../../models/pizza.model';
 
 /**
@@ -32,6 +33,25 @@ export const getSelectedPizza = createSelector(
     return router.state && entities[router.state.params.pizzaId];
   }
 );
+
+/**
+ * Here you will see, how we are extracting the required slice of state from our state tree and then combining/composing them
+ * as per our requirement and sending them to the component.
+ * This selector combines the selected toppings that user does on the screen and combines it with selected pizza to show them visually.
+ */
+export const getPizzaVisualised = createSelector(
+  getSelectedPizza,
+  fromToppings.getToppingsEntities,
+  fromToppings.getSelectedToppings,
+  // The three arguments below are coming from above three parameters i.e. pizza from  getSelectedPizza, etc.
+  (pizza, toppingEntities, selectedToppings: number[]) => {
+    // selectedToppings is an array of topping id
+    const toppings = selectedToppings.map(id => toppingEntities[id]);
+    return {
+      ...pizza, toppings
+    }
+  }
+)
 
 // Return pizzas as Arrays
 export const getAllPizzas = createSelector(getPizzasEntities, entities => {
