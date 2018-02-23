@@ -13,54 +13,49 @@ import { PizzasService } from '../../services';
 
 @Injectable()
 export class PizzasEffects {
-  constructor(
-    private action$: Actions,
-    private pizzaService: PizzasService
-  ) {}
+  constructor(private action$: Actions, private pizzaService: PizzasService) {}
 
   @Effect() // This is an effect, which will dispatch an action back to our reducer
   // @Effect(dispatch: false) - If we do not want to dispatch an action from an Effect
   // listen to action here coming from components
   // loadPizza$ is an Obervable<Action>
-  loadPizzas$ = this.action$
-    .ofType(pizzaAction.LOAD_PIZZAS)
-    .pipe(
-      // switch to a brand new observable
-      switchMap(() => {
-        return this.pizzaService
-          .getPizzas()
-          .pipe(
-            map(
-              pizzas =>
-                new pizzaAction.LoadPizzasSuccess(pizzas)
-            ),
-            catchError(error =>
-              of(new pizzaAction.LoadPizzasFail(error))
-            )
-          );
-      })
-    );
+  loadPizzas$ = this.action$.ofType(pizzaAction.LOAD_PIZZAS).pipe(
+    // switch to a brand new observable
+    switchMap(() => {
+      return this.pizzaService
+        .getPizzas()
+        .pipe(
+          map(pizzas => new pizzaAction.LoadPizzasSuccess(pizzas)),
+          catchError(error => of(new pizzaAction.LoadPizzasFail(error)))
+        );
+    })
+  );
 
   @Effect() // An effect listening to create_pizza action.
   // Create pizza and then issues a success action back to component.
-  createPizza$ = this.action$
-    .ofType(pizzaAction.CREATE_PIZZA)
-    .pipe(
-      map(
-        (action: pizzaAction.CreatePizza) => action.payload
-      ),
-      switchMap(pizza => {
-        return this.pizzaService
-          .createPizza(pizza)
-          .pipe(
-            map(
-              pizza =>
-                new pizzaAction.CreatePizzaSuccess(pizza)
-            ),
-            catchError(error =>
-              of(new pizzaAction.CreatePizzaFail(error))
-            )
-          );
-      })
-    );
+  createPizza$ = this.action$.ofType(pizzaAction.CREATE_PIZZA).pipe(
+    map((action: pizzaAction.CreatePizza) => action.payload),
+    switchMap(pizza => {
+      return this.pizzaService
+        .createPizza(pizza)
+        .pipe(
+          map(pizza => new pizzaAction.CreatePizzaSuccess(pizza)),
+          catchError(error => of(new pizzaAction.CreatePizzaFail(error)))
+        );
+    })
+  );
+
+  @Effect() // An effect listening to update_pizza action.
+  // It then returns the action back to reducer.
+  UpdatePizza$ = this.action$.ofType(pizzaAction.UPDATE_PIZZA).pipe(
+    map((action: pizzaAction.UpdatePizza) => action.payload),
+    switchMap(pizza => {
+      return this.pizzaService
+        .updatePizza(pizza)
+        .pipe(
+          map(pizza => new pizzaAction.UpdatePizzaSuccess(pizza)),
+          catchError(error => of(new pizzaAction.UpdatePizzaFail(error)))
+        );
+    })
+  );
 }
