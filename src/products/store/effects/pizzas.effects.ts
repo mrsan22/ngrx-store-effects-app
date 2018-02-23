@@ -58,4 +58,17 @@ export class PizzasEffects {
         );
     })
   );
+
+  @Effect() // An effect listening to remove_pizza action.
+  // It then returns the action back to reducer.
+  RemovePizza$ = this.action$.ofType(pizzaAction.REMOVE_PIZZA).pipe(
+    map((action: pizzaAction.RemovePizza) => action.payload),
+    switchMap(pizza => {
+      return this.pizzaService.removePizza(pizza).pipe(
+        // no pizza given back in case of delete
+        map(() => new pizzaAction.RemovePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaAction.RemovePizzaFail(error)))
+      );
+    })
+  );
 }

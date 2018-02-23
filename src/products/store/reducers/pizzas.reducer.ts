@@ -75,6 +75,17 @@ export function reducer(state = initialState, action: fromPizzas.PizzasAction): 
         entities
       };
     }
+
+    case fromPizzas.REMOVE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      // Give me the item that we want to delete from state.entities (all items) by destructure syntax
+      // In below statement we are removing the required pizza using the id and then entities contain all pizzas except the delete one.
+      const { [pizza.id]: removed, ...entities } = state.entities;
+      return {
+        ...state,
+        entities
+      };
+    }
   }
   return state;
 }

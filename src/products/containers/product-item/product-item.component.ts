@@ -45,10 +45,12 @@ export class ProductItemComponent implements OnInit {
         this.store.dispatch(new fromStore.VisualiseToppings(toppings));
       })
     );
+    // All the inputs from presentational component are handled by the store.select()
     this.toppings$ = this.store.select(fromStore.getAllToppings);
     this.visualise$ = this.store.select(fromStore.getPizzaVisualised);
   }
 
+  // All the outputs from the presentational component are handled by the store.dispatch()
   onSelect(event: number[]) {
     this.store.dispatch(new fromStore.VisualiseToppings(event));
   }
@@ -61,5 +63,10 @@ export class ProductItemComponent implements OnInit {
     this.store.dispatch(new fromStore.UpdatePizza(event));
   }
 
-  onRemove(event: Pizza) {}
+  onRemove(event: Pizza) {
+    const remove = window.confirm('Are you sure?');
+    if (remove) {
+      this.store.dispatch(new fromStore.RemovePizza(event));
+    }
+  }
 }
