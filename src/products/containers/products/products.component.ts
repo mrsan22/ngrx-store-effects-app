@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store } from '@ngrx/store'
-import { Observable } from 'rxjs/Observable'
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import * as fromStore from '../../store';
 import { Pizza } from '../../models/pizza.model';
 
 @Component({
   selector: 'products',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['products.component.scss'],
   template: `
     <div class="products">
@@ -26,7 +27,7 @@ import { Pizza } from '../../models/pizza.model';
         </pizza-item>
       </div>
     </div>
-  `,
+  `
 })
 export class ProductsComponent implements OnInit {
   pizzas$: Observable<Pizza[]>;
@@ -41,8 +42,8 @@ export class ProductsComponent implements OnInit {
     // OR we can pass our 'getAllPizzas' selector to all the pizzas
     //this.store.select<any>('products').subscribe(state => console.log(state))
     this.pizzas$ = this.store.select(fromStore.getAllPizzas);
-    this.store.dispatch(new fromStore.LoadPizzas);
+    // The below load pizza dispatch now happens from Route Guards under Guards dir
+    //this.store.dispatch(new fromStore.LoadPizzas());
     this.store.dispatch(new fromStore.LoadToppings());
-
   }
 }
