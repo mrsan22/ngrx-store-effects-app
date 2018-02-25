@@ -1,25 +1,22 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { Routes, RouterModule } from "@angular/router";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { Routes, RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer
-} from "@ngrx/router-store";
-import { StoreModule, MetaReducer } from "@ngrx/store";
-import { EffectsModule } from "@ngrx/effects";
+import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
+import { StoreModule, MetaReducer } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
-import { reducers, CustomSerializer } from "./store/reducers";
+import { reducers, effects, CustomSerializer } from './store';
 
 // not used in production
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
  * exception will be thrown. This is useful during development mode to
  * ensure that none of the reducers accidentally mutates the state.
  */
-import { storeFreeze } from "ngrx-store-freeze";
+import { storeFreeze } from 'ngrx-store-freeze';
 
 // this would be done dynamically with webpack for builds
 const environment = {
@@ -32,19 +29,17 @@ const environment = {
  * the root meta-reducer. To add more meta-reducers, provide an array of meta-reducers
  * that will be composed to form the root meta-reducer.
  */
-export const metaReducers: MetaReducer<any>[] = !environment.production
-  ? [storeFreeze]
-  : [];
+export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 
 // bootstrap
-import { AppComponent } from "./containers/app/app.component";
+import { AppComponent } from './containers/app/app.component';
 
 // routes
 export const ROUTES: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "products" },
+  { path: '', pathMatch: 'full', redirectTo: 'products' },
   {
-    path: "products",
-    loadChildren: "../products/products.module#ProductsModule"
+    path: 'products',
+    loadChildren: '../products/products.module#ProductsModule'
   }
 ];
 
@@ -61,7 +56,7 @@ export const ROUTES: Routes = [
      * based application.
      */
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     environment.development ? StoreDevtoolsModule.instrument() : []
   ],

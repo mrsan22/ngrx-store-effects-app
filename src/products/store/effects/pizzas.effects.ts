@@ -8,6 +8,8 @@ import { Effect, Actions } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
+import * as fromRoot from '../../../app/store';
+
 import * as pizzaAction from '../actions';
 import { PizzasService } from '../../services';
 
@@ -45,6 +47,16 @@ export class PizzasEffects {
     })
   );
 
+  // Listen to side-effects for navigation
+  // Flow of action: so action at Line 44: pizzaAction.CreatePizzaSuccess will run first and the control goes to reducer. The reducer then also call below Effect.
+  @Effect()
+  createPizzaSuccess$ = this.action$.ofType(pizzaAction.CREATE_PIZZA_SUCCESS).pipe(
+    map((action: pizzaAction.CreatePizzaSuccess) => action.payload),
+    map(pizza => {
+      return new fromRoot.Go({ path: ['/products', pizza.id] });
+    })
+  );
+
   @Effect() // An effect listening to update_pizza action.
   // It then returns the action back to reducer.
   UpdatePizza$ = this.action$.ofType(pizzaAction.UPDATE_PIZZA).pipe(
@@ -69,6 +81,16 @@ export class PizzasEffects {
         map(() => new pizzaAction.RemovePizzaSuccess(pizza)),
         catchError(error => of(new pizzaAction.RemovePizzaFail(error)))
       );
+    })
+  );
+
+  // ofType accepts string [] action
+  @Effect()
+  handlePizzaSuccess$ = this.action$.ofType(pizzaAction.UPDATE_PIZZA_SUCCESS, pizzaAction.REMOVE_PIZZA_SUCCESS).pipe(
+    map(pizza => {
+      return new fromRoot.Go({
+        path: ['/products']
+      });
     })
   );
 }
